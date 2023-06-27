@@ -10,10 +10,8 @@ const Statistics = (props) => {
   const bad = props.bad;
   const total = props.total;
 
-  return (
+  return total ? (
     <>
-      <h1>statistics</h1>
-
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
@@ -21,6 +19,8 @@ const Statistics = (props) => {
       <p>average {(good - bad) / total}</p>
       <p>positive {(good / total) * 100} %</p>
     </>
+  ) : (
+    <p>No feedback given</p>
   );
 };
 
@@ -50,6 +50,7 @@ const App = () => {
       <Button handleClick={() => increaseByOne('neutral')} text={'neutral'} />
       <Button handleClick={() => increaseByOne('bad')} text={'bad'} />
 
+      <h1>statistics</h1>
       <Statistics good={good} neutral={neutral} bad={bad} total={total} />
     </>
   );
