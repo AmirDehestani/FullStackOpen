@@ -4,6 +4,12 @@ const Button = (props) => (
   <button onClick={props.handleClick}>{props.text}</button>
 );
 
+const StatisticLine = (props) => (
+  <p>
+    {props.text} {props.value}
+  </p>
+);
+
 const Statistics = (props) => {
   const good = props.good;
   const neutral = props.neutral;
@@ -12,12 +18,12 @@ const Statistics = (props) => {
 
   return total ? (
     <>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>total {total}</p>
-      <p>average {(good - bad) / total}</p>
-      <p>positive {(good / total) * 100} %</p>
+      <StatisticLine text={'good'} value={good} />
+      <StatisticLine text={'neutral'} value={neutral} />
+      <StatisticLine text={'bad'} value={bad} />
+      <StatisticLine text={'total'} value={total} />
+      <StatisticLine text={'average'} value={(good - bad) / total} />
+      <StatisticLine text={'positive'} value={`${(good / total) * 100} %`} />
     </>
   ) : (
     <p>No feedback given</p>
@@ -31,7 +37,7 @@ const App = () => {
   const [bad, setBad] = useState(0);
   const [total, setTotal] = useState(0);
 
-  const increaseByOne = (feedback) => {
+  const giveFeedback = (feedback) => {
     if (feedback === 'good') {
       setGood(good + 1);
     } else if (feedback === 'neutral') {
@@ -46,9 +52,9 @@ const App = () => {
     <>
       <h1>give feedback</h1>
 
-      <Button handleClick={() => increaseByOne('good')} text={'good'} />
-      <Button handleClick={() => increaseByOne('neutral')} text={'neutral'} />
-      <Button handleClick={() => increaseByOne('bad')} text={'bad'} />
+      <Button handleClick={() => giveFeedback('good')} text={'good'} />
+      <Button handleClick={() => giveFeedback('neutral')} text={'neutral'} />
+      <Button handleClick={() => giveFeedback('bad')} text={'bad'} />
 
       <h1>statistics</h1>
       <Statistics good={good} neutral={neutral} bad={bad} total={total} />
