@@ -9,11 +9,21 @@ const Part = ({ part }) => (
   </p>
 );
 
+const Total = ({ parts }) => {
+  const totalExercises = parts.reduce((sum, part) => sum + part.exercises, 0);
+  return (
+    <p>
+      <b>total of {totalExercises} exercises</b>
+    </p>
+  );
+};
+
 const Course = ({ course }) => {
   return (
     <>
       <Header name={course.name} />
       <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </>
   );
 };
