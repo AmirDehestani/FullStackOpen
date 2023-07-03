@@ -11,6 +11,10 @@ const create = (newPerson) => {
   return request.then((response) => response.data);
 };
 
-const phonebookService = { getAll, create };
+const remove = (id) => {
+  return axios.delete(`${url}/${id}`);
+};
+
+const phonebookService = { getAll, create, remove };
 
 export default phonebookService;

@@ -53,6 +53,16 @@ const App = () => {
     }
   };
 
+  const handleDelete = (person) => {
+    const name = person.name;
+    const id = person.id;
+    if (window.confirm(`Delete ${name}?`)) {
+      phonebookService.remove(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -67,7 +77,10 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons persons={!search ? persons : searchResults} />
+      <Persons
+        persons={!search ? persons : searchResults}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };
