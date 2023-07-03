@@ -38,13 +38,27 @@ const App = () => {
 
   const handleNameSubmit = (event) => {
     event.preventDefault();
-    if (
-      persons.find(
-        (person) =>
-          JSON.stringify(person.name) === JSON.stringify(newPerson.name)
-      )
-    ) {
-      window.alert(`${newPerson.name} is already added to the phonebook.`);
+    const personExists = persons.find(
+      (person) => JSON.stringify(person.name) === JSON.stringify(newPerson.name)
+    );
+
+    // Person exists, ask user if they want to update the existing number
+    if (personExists) {
+      if (
+        window.confirm(
+          `${newPerson.name} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const id = personExists.id;
+        phonebookService.update(id, newPerson).then((respond) => {
+          setPersons(
+            persons.map((person) => (person.id !== id ? person : respond))
+          );
+          setnewPerson({ name: '', number: '' });
+        });
+      }
+
+      // Person doesn't already exist, add it
     } else {
       phonebookService.create(newPerson).then((response) => {
         setPersons(persons.concat(response));

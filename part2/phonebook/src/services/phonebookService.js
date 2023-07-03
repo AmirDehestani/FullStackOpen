@@ -15,6 +15,11 @@ const remove = (id) => {
   return axios.delete(`${url}/${id}`);
 };
 
-const phonebookService = { getAll, create, remove };
+const update = (id, updatedPerson) => {
+  const request = axios.put(`${url}/${id}`, updatedPerson);
+  return request.then((response) => response.data);
+};
+
+const phonebookService = { getAll, create, remove, update };
 
 export default phonebookService;
