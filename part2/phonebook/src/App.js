@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Persons from './components/Persons';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
-import axios from 'axios';
+import phonebookService from './services/phonebookService';
 
 const App = () => {
   // App compontent state
@@ -15,9 +15,7 @@ const App = () => {
 
   // Load the data from database
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then((respond) => setPersons(respond.data));
+    phonebookService.getAll().then((respond) => setPersons(respond));
   }, []);
 
   // Handlers
@@ -48,8 +46,10 @@ const App = () => {
     ) {
       window.alert(`${newPerson.name} is already added to the phonebook.`);
     } else {
-      setPersons(persons.concat(newPerson));
-      setnewPerson({ name: '', number: '' });
+      phonebookService.create(newPerson).then((response) => {
+        setPersons(persons.concat(response));
+        setnewPerson({ name: '', number: '' });
+      });
     }
   };
 
