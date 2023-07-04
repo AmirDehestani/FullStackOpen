@@ -3,6 +3,7 @@ import Persons from './components/Persons';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import phonebookService from './services/phonebookService';
+import Message from './components/Message';
 
 const App = () => {
   // App compontent state
@@ -12,6 +13,10 @@ const App = () => {
   const [searchResults, setSearchResults] = useState([
     { name: '', numebr: '' },
   ]);
+  const [message, setMessage] = useState({
+    message: null,
+    type: null,
+  });
 
   // Load the data from database
   useEffect(() => {
@@ -50,11 +55,15 @@ const App = () => {
         )
       ) {
         const id = personExists.id;
-        phonebookService.update(id, newPerson).then((respond) => {
+        phonebookService.update(id, newPerson).then((response) => {
           setPersons(
-            persons.map((person) => (person.id !== id ? person : respond))
+            persons.map((person) => (person.id !== id ? person : response))
           );
           setnewPerson({ name: '', number: '' });
+          setMessage({ message: `Updated ${response.name}`, type: 'success' });
+          setTimeout(() => {
+            setMessage({ message: null, type: null });
+          }, 5000);
         });
       }
 
@@ -63,6 +72,10 @@ const App = () => {
       phonebookService.create(newPerson).then((response) => {
         setPersons(persons.concat(response));
         setnewPerson({ name: '', number: '' });
+        setMessage({ message: `Added ${response.name}`, type: 'success' });
+        setTimeout(() => {
+          setMessage({ message: null, type: null });
+        }, 5000);
       });
     }
   };
@@ -80,6 +93,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Message message={message.message} type={message.type} />
       <Filter searchQuery={search} handleChange={handleSearchChange} />
 
       <h2>add a new</h2>
