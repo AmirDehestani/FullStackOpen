@@ -55,16 +55,30 @@ const App = () => {
         )
       ) {
         const id = personExists.id;
-        phonebookService.update(id, newPerson).then((response) => {
-          setPersons(
-            persons.map((person) => (person.id !== id ? person : response))
-          );
-          setnewPerson({ name: '', number: '' });
-          setMessage({ message: `Updated ${response.name}`, type: 'success' });
-          setTimeout(() => {
-            setMessage({ message: null, type: null });
-          }, 5000);
-        });
+        phonebookService
+          .update(id, newPerson)
+          .then((response) => {
+            setPersons(
+              persons.map((person) => (person.id !== id ? person : response))
+            );
+            setnewPerson({ name: '', number: '' });
+            setMessage({
+              message: `Updated ${response.name}`,
+              type: 'success',
+            });
+            setTimeout(() => {
+              setMessage({ message: null, type: null });
+            }, 5000);
+          })
+          .catch(() => {
+            setMessage({
+              message: `Information of ${newPerson.name} has already been removed from the server`,
+              type: 'error',
+            });
+            setTimeout(() => {
+              setMessage({ message: null, type: null });
+            }, 5000);
+          });
       }
 
       // Person doesn't already exist, add it
@@ -84,9 +98,20 @@ const App = () => {
     const name = person.name;
     const id = person.id;
     if (window.confirm(`Delete ${name}?`)) {
-      phonebookService.remove(id).then(() => {
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      phonebookService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch(() => {
+          setMessage({
+            message: `Information of ${newPerson.name} has already been removed from the server`,
+            type: 'error',
+          });
+          setTimeout(() => {
+            setMessage({ message: null, type: null });
+          }, 5000);
+        });
     }
   };
 

@@ -24,11 +24,6 @@
       "name": "John Doe",
       "number": "321-321-321",
       "id": 5
-    },
-    {
-      "name": "Jane Doe",
-      "number": "000-123-123",
-      "id": 6
     }
   ]
 }
