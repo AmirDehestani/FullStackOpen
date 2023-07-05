@@ -10,7 +10,7 @@ const SearchResults = ({ countries }) => {
       <div>
         <ul>
           {countries.map((country) => (
-            <li key={country}>{country}</li>
+            <li key={country.name.common}>{country.name.common}</li>
           ))}
         </ul>
       </div>

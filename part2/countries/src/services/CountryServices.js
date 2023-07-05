@@ -1,23 +1,21 @@
 import axios from 'axios';
 
-// Returns the list of all countries' names
-const getNames = () => {
+// Returns the list of all countries
+const getAll = () => {
   const request = axios.get(
     'https://studies.cs.helsinki.fi/restcountries/api/all'
   );
-  return request.then((response) =>
-    response.data.map((country) => country.name.common)
-  );
+  return request.then((response) => response.data);
 };
 
-// Return information about a country
-const getCountry = (name) => {
+// Returns a single country by name
+const getCountry = (country) => {
   const request = axios.get(
-    `https://studies.cs.helsinki.fi/restcountries/api/name/${name}`
+    `https://studies.cs.helsinki.fi/restcountries/api/name/${country}`
   );
-  return request;
+  return request.then((response) => response.data);
 };
 
-const CountryServices = { getNames, getCountry };
+const CountryServices = { getAll, getCountry };
 
 export default CountryServices;

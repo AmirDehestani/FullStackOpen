@@ -6,14 +6,20 @@ import CountryServices from './services/CountryServices';
 const App = () => {
   // App component state
   const [query, setQuery] = useState('');
-  const [country, setCountry] = useState([]);
+  const [country, setCountry] = useState(null);
 
   useEffect(() => {
-    CountryServices.getNames()
-      .then((response) =>
-        response.filter((r) => r.toLowerCase().includes(query.toLowerCase()))
-      )
-      .then((response) => setCountry(response));
+    if (query) {
+      CountryServices.getAll()
+        .then((response) =>
+          response.filter((r) =>
+            r.name.common.toLowerCase().includes(query.toLowerCase())
+          )
+        )
+        .then((response) => setCountry(response));
+    } else {
+      setCountry(null);
+    }
   }, [query]);
 
   // Handle query change in the search bar
@@ -25,7 +31,7 @@ const App = () => {
   return (
     <>
       <SearchBar query={query} handleChange={handleQueryChange} />
-      <SearchResults countries={country} />
+      {country ? <SearchResults countries={country} /> : null}
     </>
   );
 };
