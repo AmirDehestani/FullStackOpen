@@ -16,11 +16,13 @@ const App = () => {
             r.name.common.toLowerCase().includes(query.toLowerCase())
           )
         )
-        .then((response) => setCountry(response));
+        .then((response) => {
+          setCountry(response);
+        });
     } else {
       setCountry(null);
     }
-  }, [query]);
+  }, [query, country]);
 
   // Handle query change in the search bar
   const handleQueryChange = (event) => {
@@ -28,10 +30,18 @@ const App = () => {
     setQuery(countryQuery);
   };
 
+  const handleShowCountry = (countryName) => {
+    CountryServices.getCountry(countryName).then((response) => {
+      setQuery(response.name.common);
+    });
+  };
+
   return (
     <>
       <SearchBar query={query} handleChange={handleQueryChange} />
-      {country ? <SearchResults countries={country} /> : null}
+      {country ? (
+        <SearchResults countries={country} showCountry={handleShowCountry} />
+      ) : null}
     </>
   );
 };
