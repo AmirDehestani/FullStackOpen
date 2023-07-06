@@ -22,7 +22,7 @@ const App = () => {
     } else {
       setCountry(null);
     }
-  }, [query, country]);
+  }, [query]);
 
   // Handle query change in the search bar
   const handleQueryChange = (event) => {
